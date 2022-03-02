@@ -1,0 +1,130 @@
+/*Remove todas as configurações da página*/
+* {
+  border: none;
+  box-sizing: border-box;
+  color: #323232;
+  font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/*Tirar borda ao selecionar input*/
+textarea:focus, input:focus {
+  outline: none;
+}
+
+/*Utilizar o rem para garantir a adaptabilidade dos dispositívos*/
+a {
+  font-size: 0.8rem;
+}
+
+/*Efeito de quando passa o mouse em cima de um link*/
+a:hover {
+ color: #08558B;
+}
+
+body{
+  background-attachment: fixed;
+  background-image: url('/images/loginBackground.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.productContainer {
+  background-color: white;
+  border-radius: 10px;
+  margin: 10vh auto 10vh auto;
+  padding: 20px auto;
+  text-align: center;
+  width: fit-content;
+}
+
+.topBar {
+  background-color: mediumorchid;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+.mainProduct {
+  padding: 30px 50px;
+}
+
+.titleInput {
+ color: red;
+}
+
+.inputProduct{
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 15px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.lineImput {
+  display: grid;
+  margin-bottom: 10px;
+}
+
+input {
+  border-bottom: 2px solid #323232;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+input:focus {
+  border-bottom: 2px solid #08558B;
+}
+
+.buttonsContainer {
+  display: inline;
+  text-align: center;
+}
+
+.buttons {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px #b8b8b8;
+  color: #323232;
+  font-size: 1rem;
+  height: 30px;
+  margin-top: 10px;
+  width: 40%;
+}
+
+.buttons:hover {
+  background-color: #1B223C;
+  color: white;
+  transition: 0.5s;
+}
+
+.titleInventory {
+  text-align: center;
+  padding: 20px;
+}
+
+.tableContainer {
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+}
+
+.tableContainer th {
+  background-color: rgb(226, 226, 226);
+  padding: 4px 5px;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+}
+
+.tableContainer td {
+  padding: 4px 5px;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+}
+
+.centerText {
+  text-align: center;
+}

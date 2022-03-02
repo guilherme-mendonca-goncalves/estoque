@@ -3,13 +3,18 @@ class productControl {
     this.id = 0;
     this.nameProduct = "";
     this.purchaseQuantity = 0;
-    this.unit = "";
+    this.unitOfMeasurement = "";
     this.purchasePrice = 0;
     this.shippingCost = 0;
+    this.stockQuantity = 0;
   }
 
   add() {
     alert('Produto adicionado com sucesso!');
+  }
+
+  edit() {
+
   }
 
   clean() {
@@ -17,4 +22,4 @@ class productControl {
   }
 }
 
-var product = new productControl();
+var products = new productControl();
