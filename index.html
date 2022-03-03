@@ -22,25 +22,25 @@
         <div class="inputProduct">
           <div class="lineImput">
             <label>Produto</label>
-            <input type="text" id="product" placeholder="Nome do produto">
+            <input type="text" id="name" placeholder="Nome do produto">
           </div>
           <div class="lineImput">
             <label>Quantidade de compra</label>
-            <input type="text" id="quantity" placeholder="Quantidade mínima para compra">
+            <input type="number" id="quantity" placeholder="Quantidade mínima para compra">
           </div>
           <div class="lineImput">
             <label>Unidade</label>
             <input type="text" id="unit" placeholder="Unidade do produto. Ex.: metros, unidade, etc...">
           <div class="lineImput">
             <label>Preço</label>
-            <input type="text" id="price" placeholder="Custo de compra do produto">
+            <input type="number" id="price" placeholder="Custo de compra do produto">
           </div>
           <div class="lineImput">
             <label>Frete</label>
-            <input type="text" id="freight" placeholder="Custo com frete para compra do produto">
+            <input type="number" id="freight" placeholder="Custo com frete para compra do produto">
           </div>
           <div class="buttonsContainer">
-            <button class="buttons" onclick="products.add()">Cadastrar</button>
+            <button class="buttons" onclick="products.save()" id="buttonSave">Salvar</button>
             <button class="buttons" onclick="products.clean()">Limpar</button>
           </div>
         </div>
@@ -52,23 +52,17 @@
           <table border="1" class="tableContainer">
             <thead>
               <th class="centerText">ID</th>
-              <th>Produto</th>
+              <th class="centerText">Produto</th>
               <th class="centerText">Quantidade de compra</th>
               <th class="centerText">Unidade</th>
               <th class="centerText">Preço</th>
               <th class="centerText">Frete</th>
               <th class="centerText">Quantidade no estoque</th>
+              <th class="centerText">Custo unitário</th>
               <th class="centerText">Ações</th>
             </thead>
-            <tbody>
-              <td class="centerText">1</td>
-              <td>EVA</td>
-              <td class="centerText">1</td>
-              <td class="centerText">Unidade</td>
-              <td class="centerText">R$3,50</td>
-              <td class="centerText">-</td>
-              <td class="centerText">0</td>
-              <td class="centerText"><i class="fa fa-plus-square-o"></i>&nbsp&nbsp<i class="fa fa-pencil"></i>&nbsp&nbsp<i class="fa fa-eraser"></i></td>
+            <tbody id="tbodyContainer">
+
             </tbody>
           </table>
         </div>
