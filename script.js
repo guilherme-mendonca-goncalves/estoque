@@ -5,6 +5,8 @@ class productControl {
     this.editId = null;
   }
 
+
+
   clean() {
     document.getElementById('name').value = '';
     document.getElementById('quantity').value = '';
@@ -12,6 +14,7 @@ class productControl {
     document.getElementById('price').value = '';
     document.getElementById('freight').value = '';
     document.getElementById('buttonSave').innerText = 'Salvar';
+    document.getElementById('buttonClean').innerText = 'Limpar';
     this.editId = null;
   }
 
@@ -23,13 +26,40 @@ class productControl {
     document.getElementById('price').value = productData.purchasePrice;
     document.getElementById('freight').value = productData.shippingCost;
     document.getElementById('buttonSave').innerText = 'Atualizar';
+    document.getElementById('buttonClean').innerText = 'Cancelar';
   }
 
-  editStock() {
+  editStock(idEditStock) {
+    if(confirm('Deseja realmente alterar a quantidade do produto do ID '+idEditStock)) {
+    this.editId = idEditStock.id;
+    const stockModify = prompt('Qual a quantidade em estoque do produto do ID '+idEditStock);
+    /*Corrigir mensagens de alerta que não aparecem*/
+    for(let i = 0; i < this.arrayProducts.length; i++) {
+      if(this.arrayProducts[i].id == idEditStock) {
+        this.arrayProducts[i].stockQuantity = stockModify;
+      }
+    }
+    this.listTable();
+    alert('Estoque alterado com sucesso!');
+    }
+  }
 
+  addIcon (iconType, id) {
+    let icon = document.createElement("i");
+    icon.classList.add('fa');
+    icon.classList.add(iconType);
+    icon.setAttribute("onclick", "products.editStock("+id+")");
+    return icon;
   }
 
   listTable() {
+    //Converter número para R$
+    const convertToReal = (value) => {
+      const formattedValue = value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+      return formattedValue;
+    }
+
     let writeList = document.getElementById('tbodyContainer');
     writeList.innerText = '';
     for(let i = 0; i < this.arrayProducts.length; i++) {
@@ -49,10 +79,10 @@ class productControl {
       columnName.innerText = this.arrayProducts[i].nameProduct;
       columnQuantity.innerText = this.arrayProducts[i].purchaseQuantity;
       columnUnit.innerText = this.arrayProducts[i].unitOfMeasurement;
-      columnPrice.innerText = this.arrayProducts[i].purchasePrice;
-      columnFreight.innerText = this.arrayProducts[i].shippingCost;
+      columnPrice.innerText = convertToReal(this.arrayProducts[i].purchasePrice);
+      columnFreight.innerText = convertToReal(this.arrayProducts[i].shippingCost);
       columnStock.innerText = this.arrayProducts[i].stockQuantity;
-      columnCost.innerText = this.arrayProducts[i].unitCost;
+      columnCost.innerText = convertToReal(this.arrayProducts[i].unitCost);
 
       columnId.classList.add('centerText');
       columnQuantity.classList.add('centerText');
@@ -62,18 +92,13 @@ class productControl {
       columnStock.classList.add('centerText');
       columnCost.classList.add('centerText');
       columnAction.classList.add('centerText');
+      columnAction.classList.add('alignedActions');
 
-      /*Inserir -> <i class="fa fa-plus-square-o"> <i class="fa fa-pencil"> < class="fa fa-eraser">
-      const imageStock;
-      const imageEdit;
-      imageEdit.setAtribute("onclick","product.editProduct("+JSON.stringify(this.arrayProducts[i])+")");
-      const imageDelet;
-      imageStock.setAtribute("onclick","product.remove("+this.arrayProducts[i].id+")");
-
-
-      columnAction.appendChild('imageStock');
-      columnAction.appendChild('imageEdit');
-      columnAction.appendChild('imageDelet');*/
+      columnAction.append(
+        products.addIcon('fa-plus-square-o',this.arrayProducts[i].id),
+        products.addIcon('fa-pencil',this.arrayProducts[i].id),
+        products.addIcon('fa-eraser',this.arrayProducts[i].id)
+      );
     }
   }
 
@@ -81,12 +106,12 @@ class productControl {
     let product = {}
     product.id = this.id;
     product.nameProduct = document.getElementById('name').value;
-    product.purchaseQuantity = document.getElementById('quantity').value;
+    product.purchaseQuantity = parseFloat(document.getElementById('quantity').value);
     product.unitOfMeasurement = document.getElementById('unit').value;
-    product.purchasePrice = document.getElementById('price').value;
-    product.shippingCost = document.getElementById('freight').value;
+    product.purchasePrice = parseFloat(document.getElementById('price').value);
+    product.shippingCost = parseFloat(document.getElementById('freight').value);
     product.stockQuantity = 0;
-    product.unitCost = ((document.getElementById('price').value + document.getElementById('freight').value) / document.getElementById('quantity').value);
+    product.unitCost = (product.purchasePrice + product.shippingCost) / product.purchaseQuantity;
     return product;
   }
 
@@ -95,17 +120,20 @@ class productControl {
       let writeList = document.getElementById('tbodyContainer');
       for(let i = 0; i < this.arrayProducts.length; i++) {
         if(this.arrayProducts[i].id == idRemove) {
-          this.arrayProducts.splice(i, 1);
+          this.arrayProducts.splice(i, 0);
           writeList.deleteRow(i);
+          alert('Item removido com sucesso!');
         }
       }
+    } else {
+      alert('Item não removido!');
     }
-    alert('Item removido com sucesso!');
   }
 
   save() {
     let product = this.readData();
-    if(this.validation(product) == true) {
+    let valid = this.validation(product);
+    if(valid == true) {
       if(this.editId == null) {
       this.write(product);
       } else {
@@ -113,7 +141,9 @@ class productControl {
       }
     }
     this.listTable();
-    this.clean();
+    if (valid) {
+      this.clean();
+    }
   }
 
   updateProduct(idUpdate, productUpdate) {
@@ -133,16 +163,16 @@ class productControl {
     if(product.nameProduct == ''){
       message += '- Informe o nome do produto! \n';
     }
-    if(product.purchaseQuantity == ''){
+    if(isNaN(product.purchaseQuantity)){
       message += '- Informe a quantidade mínima de compra! \n';
     }
     if(product.unitOfMeasurement == ''){
       message += '- Informe a unidade do produto! \n';
     }
-    if(product.purchasePrice == ''){
+    if(isNaN(product.purchasePrice)) {
       message += '- Informe o preço do produto! \n';
     }
-    if(product.shippingCost == ''){
+    if(isNaN(product.shippingCost)) {
       message += '- Informe o preço do frete! \n';
     }
     if(message != '') {
@@ -153,13 +183,9 @@ class productControl {
   }
 
   write(productWrite) {
-    productWrite.purchasePrice = Math.ceil(productWrite.purchasePrice);
-    productWrite.shippingCost = Math.ceil(productWrite.shippingCost);
-    productWrite.unitCost = Math.ceil(productWrite.unitCost);
     this.arrayProducts.push(productWrite);
     this.id++;
   }
-
 }
 
 var products = new productControl();
